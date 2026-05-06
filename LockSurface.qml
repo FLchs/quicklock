@@ -191,13 +191,13 @@ Rectangle {
 				echoMode: TextInput.Password
 				inputMethodHints: Qt.ImhSensitiveData
 
-				color: Qt.rgba(1, 1, 1, 0.7)
+				color: enabled ? Qt.rgba(1, 1, 1, 0.7) : Qt.rgba(1, 1, 1, 0.3)
 				selectionColor: "#666666"
 				selectedTextColor: bg
-				placeholderTextColor: Qt.rgba(1, 1, 1, 0.4)
+				placeholderTextColor: enabled ? Qt.rgba(1, 1, 1, 0.4) : Qt.rgba(1, 1, 1, 0.15)
 
 				background: Rectangle {
-					color: Qt.rgba(1, 1, 1, 0.1)
+					color: enabled ? Qt.rgba(1, 1, 1, 0.1) : Qt.rgba(1, 1, 1, 0.05)
 					radius: 6
 				}
 
