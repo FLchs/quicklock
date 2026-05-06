@@ -1,4 +1,4 @@
-# quicklock
+# Quicklock
 
 ![quicklock](image.png)
 
@@ -35,7 +35,7 @@ Replace `background.jpg` with your own wallpaper if you like.
 
 ## Development
 
-Run `quickshell run test.qml` to preview the lock screen in a floating window without actually locking your session. Useful for tweaking the UI.
+Run `qs -p ./test.qml` to preview the lock screen in a floating window without actually locking your session. Useful for tweaking the UI.
 
 ## Credits
 
