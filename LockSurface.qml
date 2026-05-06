@@ -262,6 +262,49 @@ Rectangle {
 			// }
 		}
 
+		// Spinner loader - shown while verifying
+		Item {
+			visible: root.context.unlockInProgress
+			implicitWidth: 24
+			implicitHeight: 24
+			Layout.alignment: Qt.AlignHCenter
+
+			Rectangle {
+				anchors.centerIn: parent
+				width: 20
+				height: 20
+				color: "transparent"
+				transform: Rotation {
+					origin.x: 10
+					origin.y: 10
+					angle: 0
+
+					NumberAnimation on angle {
+						from: 0
+						to: 360
+						duration: 800
+						loops: Animation.Infinite
+					}
+				}
+
+				Canvas {
+					anchors.fill: parent
+					anchors.margins: 2
+
+					onPaint: {
+						var ctx = getContext("2d");
+						ctx.reset();
+						ctx.lineWidth = 2;
+						ctx.strokeStyle = Qt.rgba(1, 1, 1, 0.6);
+						ctx.lineCap = "round";
+						ctx.beginPath();
+						ctx.arc(width / 2, height / 2, width / 2 - 1, 0, Math.PI * 1.5);
+						ctx.stroke();
+					}
+				}
+			}
+		}
+
 		// Retry button - shown after failed auth
 		Column {
 			visible: root.context.pamActivated && root.context.showFailure && !root.context.unlockInProgress
