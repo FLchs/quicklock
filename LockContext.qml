@@ -63,7 +63,7 @@ Scope {
 
 	Timer {
 		id: timeoutTimer
-		interval: 10000
+		interval: 30000
 		repeat: false
 		onTriggered: cancelPam()
 	}

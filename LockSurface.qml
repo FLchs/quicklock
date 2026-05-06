@@ -43,63 +43,69 @@ Rectangle {
 		}
 	}
 
-		Label {
-			id: dateLabel
-			property var date: new Date()
+	Keys.onEscapePressed: {
+		if (root.context.pamActivated) {
+			root.context.cancelPam();
+		}
+	}
 
-			anchors {
-				horizontalCenter: parent.horizontalCenter
-				top: parent.top
-				topMargin: 60
-			}
+	Label {
+		id: dateLabel
+		property var date: new Date()
 
-			renderType: Text.NativeRendering
-			font.pointSize: 24
-			color: Qt.rgba(1, 1, 1, 0.7)
-
-			Timer {
-				running: true
-				repeat: true
-				interval: 1000
-
-				onTriggered: dateLabel.date = new Date();
-			}
-
-			text: {
-				const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-				const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-				return `${days[this.date.getDay()]}, ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
-			}
+		anchors {
+			horizontalCenter: parent.horizontalCenter
+			top: parent.top
+			topMargin: 60
 		}
 
-		Label {
-			id: clock
-			property var date: new Date()
+		renderType: Text.NativeRendering
+		font.pointSize: 24
+		color: Qt.rgba(1, 1, 1, 0.7)
 
-			anchors {
-				horizontalCenter: parent.horizontalCenter
-				top: dateLabel.bottom
-				topMargin: 8
-			}
+		Timer {
+			running: true
+			repeat: true
+			interval: 1000
 
-			renderType: Text.NativeRendering
-			font.pointSize: 80
-			color: Qt.rgba(1, 1, 1, 0.7)
-
-			Timer {
-				running: true
-				repeat: true
-				interval: 1000
-
-				onTriggered: clock.date = new Date();
-			}
-
-			text: {
-				const hours = this.date.getHours().toString().padStart(2, '0');
-				const minutes = this.date.getMinutes().toString().padStart(2, '0');
-				return `${hours}:${minutes}`;
-			}
+			onTriggered: dateLabel.date = new Date();
 		}
+
+		text: {
+			const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			return `${days[this.date.getDay()]}, ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
+		}
+	}
+
+	Label {
+		id: clock
+		property var date: new Date()
+
+		anchors {
+			horizontalCenter: parent.horizontalCenter
+			top: dateLabel.bottom
+			topMargin: 8
+		}
+
+		renderType: Text.NativeRendering
+		font.pointSize: 80
+		color: Qt.rgba(1, 1, 1, 0.7)
+
+		Timer {
+			running: true
+			repeat: true
+			interval: 1000
+
+			onTriggered: clock.date = new Date();
+		}
+
+		text: {
+			const hours = this.date.getHours().toString().padStart(2, '0');
+			const minutes = this.date.getMinutes().toString().padStart(2, '0');
+			return `${hours}:${minutes}`;
+		}
+	}
 
 	ColumnLayout {
 		anchors {
@@ -174,24 +180,24 @@ Rectangle {
 
 			TextField {
 				id: passwordBox
+				placeholderText: "Enter password"
 
-				implicitWidth: 400
+				implicitWidth: 200
 				padding: 12
 
 				focus: true
+
 				enabled: !root.context.unlockInProgress
 				echoMode: TextInput.Password
 				inputMethodHints: Qt.ImhSensitiveData
 
-				color: fg
+				color: Qt.rgba(1, 1, 1, 0.7)
 				selectionColor: "#666666"
 				selectedTextColor: bg
 				placeholderTextColor: Qt.rgba(1, 1, 1, 0.4)
 
 				background: Rectangle {
-					color: surface
-					border.color: passwordBox.activeFocus ? "#555555" : border
-					border.width: 1
+					color: Qt.rgba(1, 1, 1, 0.1)
 					radius: 6
 				}
 
@@ -224,35 +230,36 @@ Rectangle {
 				}
 			}
 
-			Button {
-				text: "Unlock"
-				padding: 12
-
-				focusPolicy: Qt.NoFocus
-
-				enabled: !root.context.unlockInProgress && root.context.currentText !== "";
-
-				contentItem: Text {
-					text: parent.text
-					color: fg
-					font: parent.font
-					horizontalAlignment: Text.AlignHCenter
-					verticalAlignment: Text.AlignVCenter
-				}
-
-				background: Rectangle {
-					color: parent.enabled ? accent : Qt.darker(accent, 1.5)
-					radius: 6
-				}
-
-				onClicked: {
-					if (root.context.pamResponseRequired) {
-						root.context.respondToPam(passwordBox.text);
-					} else {
-						Qt.callLater(root.context.tryUnlock);
-					}
-				}
-			}
+			// Button {
+			// 	id: unlockButton
+			// 	implicitWidth: passwordBox.implicitHeight * .8
+			// 	implicitHeight: passwordBox.implicitHeight * .8
+			//
+			// 	focusPolicy: Qt.NoFocus
+			//
+			// 	enabled: !root.context.unlockInProgress && root.context.currentText !== "";
+			//
+			// 	contentItem: Text {
+			// 		text: "›"
+			// 		color: parent.enabled ? Qt.rgba(1, 1, 1, 0.7) : Qt.rgba(1, 1, 1, 0.3)
+			// 		font.pointSize: 28
+			// 		horizontalAlignment: Text.AlignHCenter
+			// 		verticalAlignment: Text.AlignVCenter
+			// 	}
+			//
+			// 	background: Rectangle {
+			// 		color: parent.enabled ? Qt.rgba(1, 1, 1, 0.1) : Qt.rgba(1, 1, 1, 0.05)
+			// 		radius: width / 2
+			// 	}
+			//
+			// 	onClicked: {
+			// 		if (root.context.pamResponseRequired) {
+			// 			root.context.respondToPam(passwordBox.text);
+			// 		} else {
+			// 			Qt.callLater(root.context.tryUnlock);
+			// 		}
+			// 	}
+			// }
 		}
 
 		// Retry button - shown after failed auth
@@ -291,6 +298,44 @@ Rectangle {
 			}
 			color: root.context.pamMessageIsError ? error : fg
 			Layout.alignment: Qt.AlignHCenter
+		}
+	}
+
+	Column {
+		visible: root.context.pamActivated
+		anchors {
+			horizontalCenter: parent.horizontalCenter
+			bottom: parent.bottom
+			bottomMargin: 40
+		}
+		spacing: 6
+
+		Button {
+			implicitWidth: 48
+			implicitHeight: 48
+
+			contentItem: Text {
+				text: "✕"
+				color: Qt.rgba(1, 1, 1, 0.5)
+				font.pointSize: 16
+				font.weight: Font.Bold
+				horizontalAlignment: Text.AlignHCenter
+				verticalAlignment: Text.AlignVCenter
+			}
+
+			background: Rectangle {
+				color: Qt.rgba(1, 1, 1, 0.08)
+				radius: width / 2
+			}
+
+			onClicked: root.context.cancelPam();
+		}
+
+		Text {
+			text: "Cancel"
+			color: Qt.rgba(1, 1, 1, 0.35)
+			font.pointSize: 9
+			anchors.horizontalCenter: parent.horizontalCenter
 		}
 	}
 }
