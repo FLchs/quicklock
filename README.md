@@ -1,7 +1,5 @@
 # Quicklock
 
-![quicklock](image.png)
-
 A simple lock screen for Wayland, built with [Quickshell](https://guickshell.org).
 
 ## What it does
@@ -22,6 +20,16 @@ qs -c quicklock
 - A Wayland compositor that supports the ext-session-lock protocol
 - Quickshell installed and working
 - PAM configured on your system
+
+## Demos
+
+### Password Authentication
+
+![quicklock password demo](demo_password.gif)
+
+### Fingerprint Authentication
+
+![quicklock fingerprint demo](demo_fingerprint.gif)
 
 ## Security disclaimer
 
