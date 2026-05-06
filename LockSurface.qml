@@ -49,61 +49,67 @@ Rectangle {
 		}
 	}
 
-	Label {
-		id: dateLabel
-		property var date: new Date()
+	Column {
+		id: clockGroup
+		anchors.horizontalCenter: parent.horizontalCenter
+		y: root.context.pamActivated ? 60 : parent.height / 2 - height / 2
+		spacing: 8
 
-		anchors {
-			horizontalCenter: parent.horizontalCenter
-			top: parent.top
-			topMargin: 60
+		Behavior on y {
+			NumberAnimation {
+				duration: 500
+				easing.type: Easing.InOutQuad
+			}
 		}
 
-		renderType: Text.NativeRendering
-		font.pointSize: 24
-		color: Qt.rgba(1, 1, 1, 0.7)
+		Label {
+			id: dateLabel
+			property var date: new Date()
 
-		Timer {
-			running: true
-			repeat: true
-			interval: 1000
+			anchors.horizontalCenter: parent.horizontalCenter
 
-			onTriggered: dateLabel.date = new Date();
+			renderType: Text.NativeRendering
+			font.pointSize: 24
+			color: Qt.rgba(1, 1, 1, 0.7)
+
+			Timer {
+				running: true
+				repeat: true
+				interval: 1000
+
+				onTriggered: dateLabel.date = new Date();
+			}
+
+			text: {
+				const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+				const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+				return `${days[this.date.getDay()]}, ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
+			}
 		}
 
-		text: {
-			const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-			const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-			return `${days[this.date.getDay()]}, ${months[this.date.getMonth()]} ${this.date.getDate()}, ${this.date.getFullYear()}`;
-		}
-	}
+		Label {
+			id: clock
+			property var date: new Date()
 
-	Label {
-		id: clock
-		property var date: new Date()
+			anchors.horizontalCenter: parent.horizontalCenter
 
-		anchors {
-			horizontalCenter: parent.horizontalCenter
-			top: dateLabel.bottom
-			topMargin: 8
-		}
+			renderType: Text.NativeRendering
+			font.pointSize: 80
+			color: Qt.rgba(1, 1, 1, 0.7)
 
-		renderType: Text.NativeRendering
-		font.pointSize: 80
-		color: Qt.rgba(1, 1, 1, 0.7)
+			Timer {
+				running: true
+				repeat: true
+				interval: 1000
 
-		Timer {
-			running: true
-			repeat: true
-			interval: 1000
+				onTriggered: clock.date = new Date();
+			}
 
-			onTriggered: clock.date = new Date();
-		}
-
-		text: {
-			const hours = this.date.getHours().toString().padStart(2, '0');
-			const minutes = this.date.getMinutes().toString().padStart(2, '0');
-			return `${hours}:${minutes}`;
+			text: {
+				const hours = this.date.getHours().toString().padStart(2, '0');
+				const minutes = this.date.getMinutes().toString().padStart(2, '0');
+				return `${hours}:${minutes}`;
+			}
 		}
 	}
 
@@ -114,35 +120,6 @@ Rectangle {
 		}
 
 		spacing: 16
-
-		// Hint label - shown before any auth attempt
-		Label {
-			id: hintLabel
-			visible: !root.context.pamActivated
-			text: "Click or press any key to unlock"
-			color: Qt.rgba(1, 1, 1, 0.4)
-			font.pointSize: 14
-			Layout.alignment: Qt.AlignHCenter
-
-			SequentialAnimation {
-				id: hintPulseAnimation
-				running: hintLabel.visible
-				loops: Animation.Infinite
-
-				NumberAnimation {
-					target: hintLabel
-					property: "opacity"
-					to: 0.5
-					duration: 2000
-				}
-				NumberAnimation {
-					target: hintLabel
-					property: "opacity"
-					to: 1.0
-					duration: 2000
-				}
-			}
-		}
 
 		// Fingerprint indicator - shown while PAM is asking for a fingerprint
 		Label {
@@ -354,6 +331,39 @@ Rectangle {
 			color: root.context.pamMessageIsError ? error : Qt.rgba(1, 1, 1, 0.55)
 			font.pointSize: 13
 			Layout.alignment: Qt.AlignHCenter
+		}
+	}
+
+	// Hint label - shown before any auth attempt
+	Label {
+		id: hintLabel
+		visible: !root.context.pamActivated
+		anchors {
+			horizontalCenter: parent.horizontalCenter
+			bottom: parent.bottom
+			bottomMargin: 60
+		}
+		text: "Click or press any key to unlock"
+		color: Qt.rgba(1, 1, 1, 0.4)
+		font.pointSize: 14
+
+		SequentialAnimation {
+			id: hintPulseAnimation
+			running: hintLabel.visible
+			loops: Animation.Infinite
+
+			NumberAnimation {
+				target: hintLabel
+				property: "opacity"
+				to: 0.5
+				duration: 2000
+			}
+			NumberAnimation {
+				target: hintLabel
+				property: "opacity"
+				to: 1.0
+				duration: 2000
+			}
 		}
 	}
 
