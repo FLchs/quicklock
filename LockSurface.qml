@@ -263,26 +263,38 @@ Rectangle {
 		}
 
 		// Retry button - shown after failed auth
-		Button {
+		Column {
 			visible: root.context.pamActivated && root.context.showFailure && !root.context.unlockInProgress
-			text: "Retry"
-			padding: 12
+			spacing: 6
 			Layout.alignment: Qt.AlignHCenter
 
-			contentItem: Text {
-				text: parent.text
-				color: fg
-				font: parent.font
-				horizontalAlignment: Text.AlignHCenter
-				verticalAlignment: Text.AlignVCenter
+			Button {
+				implicitWidth: 48
+				implicitHeight: 48
+
+				contentItem: Text {
+					text: "↻"
+					color: Qt.rgba(1, 1, 1, 0.5)
+					font.pointSize: 16
+					font.weight: Font.Bold
+					horizontalAlignment: Text.AlignHCenter
+					verticalAlignment: Text.AlignVCenter
+				}
+
+				background: Rectangle {
+					color: Qt.rgba(1, 1, 1, 0.08)
+					radius: width / 2
+				}
+
+				onClicked: root.context.tryUnlock();
 			}
 
-			background: Rectangle {
-				color: parent.enabled ? accent : Qt.darker(accent, 1.5)
-				radius: 6
+			Text {
+				text: "Retry"
+				color: Qt.rgba(1, 1, 1, 0.35)
+				font.pointSize: 9
+				anchors.horizontalCenter: parent.horizontalCenter
 			}
-
-			onClicked: root.context.tryUnlock();
 		}
 
 		// Status message
@@ -296,7 +308,8 @@ Rectangle {
 					return "Authentication failed";
 				return "";
 			}
-			color: root.context.pamMessageIsError ? error : fg
+			color: root.context.pamMessageIsError ? error : Qt.rgba(1, 1, 1, 0.55)
+			font.pointSize: 13
 			Layout.alignment: Qt.AlignHCenter
 		}
 	}
