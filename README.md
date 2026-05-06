@@ -2,7 +2,7 @@
 
 ![quicklock](image.png)
 
-A simple lock screen for Wayland, built with [Quickshell](https://github.com/quickshell-mirror/quickshell).
+A simple lock screen for Wayland, built with [Quickshell](https://guickshell.org).
 
 ## What it does
 
