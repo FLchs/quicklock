@@ -18,6 +18,7 @@ Scope {
 	readonly property alias pamMessageIsError: pam.messageIsError
 	readonly property alias pamResponseRequired: pam.responseRequired
 	readonly property alias pamResponseVisible: pam.responseVisible
+	readonly property bool isFingerprintPrompt: pam.message.toLowerCase().includes("fingerprint")
 
 	onCurrentTextChanged: {
 		showFailure = false;

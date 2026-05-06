@@ -144,10 +144,10 @@ Rectangle {
 			}
 		}
 
-		// Fingerprint indicator - shown while scanning and not waiting for password
+		// Fingerprint indicator - shown while PAM is asking for a fingerprint
 		Label {
 			id: fingerprintIndicator
-			visible: root.context.pamActivated && !root.context.pamResponseRequired && root.context.unlockInProgress
+			visible: root.context.isFingerprintPrompt
 			text: "󰈷"
 			color: fg
 			font.pointSize: 25
