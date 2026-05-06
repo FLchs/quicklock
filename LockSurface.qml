@@ -264,7 +264,7 @@ Rectangle {
 
 		// Spinner loader - shown while verifying
 		Item {
-			visible: root.context.unlockInProgress
+			visible: root.context.unlockInProgress && root.context.pamResponseRequired
 			implicitWidth: 24
 			implicitHeight: 24
 			Layout.alignment: Qt.AlignHCenter
