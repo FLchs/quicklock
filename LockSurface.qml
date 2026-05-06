@@ -122,31 +122,43 @@ Rectangle {
 		spacing: 16
 
 		// Fingerprint indicator - shown while PAM is asking for a fingerprint
-		Label {
-			id: fingerprintIndicator
+		Column {
 			visible: root.context.isFingerprintPrompt
-			text: "󰈷"
-			color: fg
-			font.pointSize: 25
+			spacing: 8
 			Layout.alignment: Qt.AlignHCenter
 
-			SequentialAnimation {
-				id: pulseAnimation
-				running: fingerprintIndicator.visible
-				loops: Animation.Infinite
+			Label {
+				id: fingerprintIndicator
+				text: "󰈷"
+				color: fg
+				font.pointSize: 25
+				anchors.horizontalCenter: parent.horizontalCenter
 
-				NumberAnimation {
-					target: fingerprintIndicator
-					property: "opacity"
-					to: 0.4
-					duration: 2000
+				SequentialAnimation {
+					id: pulseAnimation
+					running: fingerprintIndicator.visible
+					loops: Animation.Infinite
+
+					NumberAnimation {
+						target: fingerprintIndicator
+						property: "opacity"
+						to: 0.4
+						duration: 2000
+					}
+					NumberAnimation {
+						target: fingerprintIndicator
+						property: "opacity"
+						to: 1.0
+						duration: 2000
+					}
 				}
-				NumberAnimation {
-					target: fingerprintIndicator
-					property: "opacity"
-					to: 1.0
-					duration: 2000
-				}
+			}
+
+			Label {
+				text: root.context.pamMessage !== "" ? root.context.pamMessage : "Place your finger on the sensor"
+				color: Qt.rgba(1, 1, 1, 0.5)
+				font.pointSize: 12
+				anchors.horizontalCenter: parent.horizontalCenter
 			}
 		}
 
